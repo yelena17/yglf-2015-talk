@@ -1,0 +1,896 @@
+<!-- TODO: оффлайновые картинки -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>BEM — Building 'em modular</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=792, user-scalable=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<link rel="stylesheet" href="styles/screen.css">
+</head>
+<body class="list">
+	<!--
+		Debug class on <body> enables
+		cyan grid on slides
+		-->
+	<header class="caption">
+		<h1>BEM — Building 'em modular</h1>
+		<p><a href="https://twitter.com/tadatuta">Vladimir Grinenko</a>, <a href="https://twitter.com/mursya">Yelena Jetpyspayeva</a>, <a href="http://yandex.com/">Yandex</a></p>
+	</header>
+
+	<section class="slide title"><div>
+		<h2>BEM — Building 'em modular</h2>
+		<h3>Yelena Jetpyspayeva, Vladimir Grinenko, Yandex<br>
+			You Gotta Love FrontEnd 2015, June 8-9, Tel-Aviv</h3>
+
+	</div></section>
+
+	<section class="slide cover w" style="background-color: #ccc"><div>
+		<img src="pictures/664f502a2334003fd3a27ac5136e12e1.jpg" alt="pain">
+	</div></section>
+
+	<section class="slide myself"><div>
+		<h2>Vladimir</h2>
+		<ul>
+			<li>4 years at Yandex</li>
+			<li>Head of BEM Development Division at Yandex</li>
+			<li>HTML/CSS/JS/BEM 24/7</li>
+			<li>tadatuta@yandex-team.ru</li>
+			<li>@tadatuta</li>
+			<li>github.com/tadatuta</li>
+		</ul>
+
+	</div></section>
+
+	<section class="slide myself mursya"><div>
+		<h2>Yelena</h2>
+		<ul>
+			<li>4 years at Yandex</li>
+			<li>BEM Developer Relations Programm Manager</li>
+			<li>Technology marketing & devcommunity</li>
+			<li>mursya@yandex-team.ru</li>
+			<li>@mursya</li>
+			<li>github.com/mursya</li>
+		</ul>
+
+	</div></section>
+
+	<section class="slide cover w"><div>
+		<img src="pictures/yandex-services.jpg" alt="Yandex">
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Agenda</h2>
+		<ul>
+			<li>BEM you know</li>
+			<li class="next">BEM we created</li>
+			<!-- <li class="next">BEM and other technologies</li> -->
+			<li class="next">From ancient times to the present day</li>
+			<li class="next">How to start?</li>
+		</ul>
+
+	</div></section>
+
+	<section class="slide section"><div>
+		<h2>BEM you know</h2>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Where pain comes from</h2>
+		<ul>
+			<li>Support someone's else code</li>
+			<ul>
+				<li class="next">Your own in a month</li>
+				<li class="next">#foot div div *</li>
+			</ul>
+		</ul>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Where pain comes from</h2>
+		<ul>
+			<li>Support someone's else code</li>
+			<li>Refactoring</li>
+			<li class="next">Reuse</li>
+			<ul>
+				<li class="next">Copy/paste doesn't work</li>
+				<li class="next">Hard to tell what to copy</li>
+				<li class="next">Useless code</li>
+				<li class="next">Update is a nightmare</li>
+			</ul>
+		</ul>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Where pain comes from</h2>
+		<ul>
+			<li>Support someone's else code</li>
+			<li>Refactoring</li>
+			<li>Reuse</li>
+			<li>A lot of different frameworks &amp; libs</li>
+			<li class="next">No dependency management</li>
+		</ul>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>CSS has no scoping</h2>
+		<p><span style="font-weight: bold;">a</span> { <span style="color: #666;">/* Affects all the links */</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;color: <span style="color: #c00;">red</span>;<br>
+}<br>
+<span style="font-weight: bold;">ul li a</span> { <span style="color: #666;">/* Affects all the links in lists */</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;color: <span style="color: #c00;">green</span>;<br>
+}</p>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Specificity conflicts</h2>
+		<p>&lt;<span style="color: #c00;">div</span> id="test"&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span style="color: #c00;">span</span>&gt;Text&lt;/<span style="color: #c00;">span</span>&gt;<br>
+		&lt;/<span style="color: #c00;">div</span>&gt;</p>
+
+		<p><span style="font-weight: bold;">div#test span</span> { color: <span style="color: #c00;">green</span> }<br>
+		<span style="font-weight: bold;">span</span> { color: <span style="color: #c00;">red</span> }<br>
+		<span style="font-weight: bold;">div span</span> { color: <span style="color: #c00;">blue</span> }</p>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>How to overwrite</h2>
+
+		<p>&lt;<span style="color: #c00;">div</span> class="sidebar"&gt;Left floated sidebar&lt;/<span style="color: #c00;">div</span>&gt;</p>
+
+		<p style="margin-top: -20px"><span style="font-weight: bold;">.sidebar</span> { <span style="color: #666;">/* Does it redefine `div.sidebar`?! */</span><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;float: <span style="color: #c00;">right</span>;<br>
+		}</p>
+
+		<p class="next" style="margin-top: -20px"><span style="font-weight: bold;">body .sidebar</span> { <span style="color: #666;">/* Overwrites 'div.sidebar {}' */</span><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;float: <span style="color: #c00;">left</span>;<br>
+		}</p>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>How to overwrite</h2>
+		<p><span style="font-weight: bold;">.navbar-inverse .navbar-nav>li>a</span> {
+		  color: #999;
+		}</p>
+
+		<p><span style="font-weight: bold;">#home-menu-container #home-menu li a</span> {
+		  color: red;
+		}</p>
+
+		<p><span style="font-weight: bold;">body #home-menu ul li a</span> {
+		  color: blue !important;
+		}</p>
+
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Non-deterministic matches</h2>
+		<p><span style="font-weight: bold;">#content div div</span> {<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;float: left;<br>
+		}</p>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Removing unused code</h2>
+		<p>100 pages in projects</p>
+		<p><span style="font-weight: bold;">.person div a</span> {<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;color: pink;<br>
+		}</p>
+		<p>Is it safe to remove this code?</p>
+
+	</div></section>
+
+	<section class="slide cover w"><div>
+		<img src="pictures/cure-for-everything-001.png" alt="cure">
+	</div></section>
+
+	<section class="slide no-bullets"><div>
+		<h2>BEM Methodology</h2>
+		<ul style="font-size: 2em">
+			<li><span class="colored">B</span>lock</li>
+			<li><span class="colored">E</span>lem</li>
+			<li><span class="colored">M</span>odifier</li>
+		</ul>
+
+	</div></section>
+
+	<section class="slide cover w"><div>
+		<h2>Block</h2>
+		<img src="pictures/block.png" alt="block">
+
+	</div></section>
+
+	<section class="slide cover w"><div>
+	<h2>Block,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elements</h2>
+		<img style="margin-top: 50px" src="pictures/elements.png" alt="elements">
+
+	</div></section>
+
+	<section class="slide cover w"><div>
+	<h2>Block,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elements,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modifiers</h2>
+		<img src="pictures/modifiers.png" alt="modifiers">
+
+	</div></section>
+
+	<section class="slide cover w"><div>
+		<h2>cat_type_red</h2>
+		<img src="pictures/cat_type_red.jpg" alt="cat_type_red">
+
+	</div></section>
+	<section class="slide cover h"><div>
+		<h2 style="margin-left: -113px">cat_state_wet</h2>
+		<img src="pictures/cat_state_wet.jpg" alt="cat_state_wet">
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Naming convention</h2>
+		<p style="font-size: 2em">Block_<span style="width: .1em;display:inline-block"></span>_Element_Modifier</p>
+		<p style="font-size: 2em" class="next">Block_<span style="width: .1em;display:inline-block"></span>_Element_Mod_ModValue</p>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Some of BEM principles</h2>
+		<ul>
+			<li>Map document to BEM blocks — no tag or id selectors</li>
+			<li class="next">No CSS outside of blocks</li>
+			<li class="next">Independent blocks → no global reset</li>
+			<li class="next">Avoid cascade</li>
+		</ul>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Why no ids?</h2>
+		<p><span style="font-weight: bold;">#menu</span> {<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;list-style: none;<br>
+		}</p>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Why no selectors on tags?</h2>
+		<p><span style="font-weight: bold;">#content div div</span> {<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;color: red;<br>
+		}</p>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Why avoiding cascade in CSS? o_O</h2>
+		<p>&lt;ul class="<span style="color: #03a;">menu</span>"&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;li class="<span style="color: #03a;">item</span>"&gt;Tab 1&lt;/li&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;li class="<span style="color: #03a;">item</span>"&gt;Tab 2&lt;/li&gt;<br>
+		&lt;/ul&gt;</p>
+		<p><span style="font-weight: bold;">.menu .item</span> {<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #333">/* styles for element */</span><br>
+		}</p>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Why avoiding cascade in CSS? o_O</h2>
+		<p>&lt;div class="<span style="color: #03a;">panels</span>"&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="<span style="color: #03a; font-weight: bold">item</span>"&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ul class="<span style="color: #03a;">menu</span>"&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li class="<span style="color: #03a; font-weight: bold">item</span>"&gt;Tab 1&lt;/li&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li class="<span style="color: #03a;; font-weight: bold">item</span>"&gt;Tab 2&lt;/li&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ul&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br>
+		&lt;/div&gt;</p>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>How?</h2>
+		<p>&lt;div class="<span style="color: #03a;">panels</span>"&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="<span style="color: #03a; font-weight: bold">panels__item</span>"&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ul class="<span style="color: #03a;">menu</span>"&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li class="<span style="color: #03a; font-weight: bold">menu__item</span>"&gt;Tab 1&lt;/li&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li class="<span style="color: #03a; font-weight: bold">menu__item</span>"&gt;Tab 2&lt;/li&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ul&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br>
+		&lt;/div&gt;</p>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Why no CSS outside of a block?</h2>
+		<p>&lt;ul class="menu"&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;li class="<span style="color: #03a; font-weight: bold">menu__item current</span>"&gt;Tab 2&lt;/li&gt;<br>
+		&lt;ul&gt;</p>
+		<p><span style="font-weight: bold">.menu__item.current</span> { /* combined selector */<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;background-color: red;<br>
+		}</p>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Hard to override</h2>
+		<p><span style="font-weight: bold">.menu__item.current</span> {<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;background: white;<br>
+		}</p>
+		<p><span style="font-weight: bold">.menu_dark .menu__item</span> {<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;background: black; <span style="color: red">/* Still white, baby */</span><br>
+		}</p>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>What we've got so far</h2>
+		<ul>
+			<li>Independent blocks to reuse</li>
+			<li class="next">Confidence they won't ruin something</li>
+			<li class="next">Possibility to easily override styles</li>
+			<li class="next">Self-documented code</li>
+		</ul>
+
+	</div></section>
+
+	<section class="slide section"><div>
+		<h2>BEM we created</h2>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Library time!</h2>
+		<p style="margin-top: -1em"><pre><code>library/
+	block1.css
+project/
+	blocks/
+		block1.css
+	project.css
+		<span style="color: #3a3">@import(../library/block1.css);
+		@import(blocks/block1.css);</span></code></pre></p>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>File system</h2>
+		<pre><code>prj/
+    blocks/
+        header/
+            header.css
+            header.js
+            header.tmpl
+            header.svg
+            header.md
+		</code></pre>
+
+	</div></section>
+	<section class="slide"><div>
+		<h2>File system</h2>
+		<pre><code>project/
+    blocks/
+        header/
+            _theme/
+				header_theme_simple.css
+				header_theme_full.css
+            __logo/
+                header__logo.css
+		</code></pre>
+
+	</div></section>
+
+	<section class="slide small"><div>
+		<h2>BEM tree</h2>
+		<pre><code class="small">&lt;ul class="<span style="color: #33c">menu</span>"&gt;
+    &lt;li class="<span style="color: #3c3">menu__item</span>"&gt;<b>item</b>&lt;/li&gt;
+    &lt;li class="<span style="color: #3c3">menu__item</span> <span style="color: #c33">menu__item_state_current</span>"&gt;<b>item2</b>&lt;/li&gt;
+&lt;/ul&gt;
+
+
+{
+    block: '<span style="color: #33c">menu</span>',
+    content: [
+        {
+            <span style="color: #3c3">elem: 'item'</span>,
+            content: '<b>item1</b>'
+        },
+        {
+            <span style="color: #3c3">elem: 'item'</span>,
+            <span style="color: #c33">elemMods: { state: 'current' }</span>,
+            content: '<b>item2</b>'
+        }
+    ]
+}</code></pre>
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>BEM tree</h2>
+		<ul>
+			<li>Development in terms of blocks, elements, modifiers</li>
+			<li class="next">Building just what was used</li>
+			<li class="next">Absolute freedom for libs devs</li>
+		</ul>
+
+	</div></section>
+
+	<section class="slide cover w black"><div>
+		<img src="pictures/oldschool.jpg" alt="Old School">
+	</div></section>
+	<section class="slide"><div>
+		<h2>Old school</h2>
+		<pre><code><span class="gray">&lt;</span><span class="blue">div</span> <span class="param">width</span>=<span class="param-val">120</span> <span class="param">height</span>=<span class="param-val">200</span><span class="gray">&gt;&lt;</span><span class="blue">/div</span><span class="gray">&gt;</span></code></pre>
+
+	</div></section>
+	<section class="slide"><div>
+		<h2>Old school</h2>
+		<pre><code><span class="gray">&lt;</span><span class="blue">div</span> <span class="param">width</span>=<span class="param-val">120</span> <span class="param">height</span>=<span class="param-val">200</span><span class="gray">&gt;&lt;</span><span class="blue">/div</span><span class="gray">&gt;</span>
+<span class="gray">&lt;</span><span class="blue">div</span> <span class="param">width</span>=<span class="param-val">120</span> <span class="param">height</span>=<span class="param-val">200</span><span class="gray">&gt;&lt;</span><span class="blue">/div</span><span class="gray">&gt;</span>
+<span class="gray">&lt;</span><span class="blue">div</span> <span class="param">width</span>=<span class="param-val">120</span> <span class="param">height</span>=<span class="param-val">200</span><span class="gray">&gt;&lt;</span><span class="blue">/div</span><span class="gray">&gt;</span></code></pre>
+
+	</div></section>
+	<section class="slide"><div>
+		<h2>Old school</h2>
+		<pre><code><span class="gray">&lt;</span><span class="blue">div</span> <span class="param">width</span>=<span class="param-val">120</span> <span class="param">height</span>=<span class="param-val">200</span><span class="gray">&gt;
+	<span class="gray">&lt;</span><span class="blue">div</span> <span class="param">width</span>=<span class="param-val">40</span> <span class="param">height</span>=<span class="param-val">40</span><span class="gray">&gt;
+		<span class="gray">&lt;</span><span class="blue">div</span> <span class="param">width</span>=<span class="param-val">34</span> <span class="param">height</span>=<span class="param-val">34</span><span class="gray">&gt;&lt;</span><span class="blue">/div</span><span class="gray">&gt;</span>
+	&lt;</span><span class="blue">/div</span><span class="gray">&gt;</span>
+&lt;</span><span class="blue">/div</span><span class="gray">&gt;</span>
+<span class="gray">&lt;</span><span class="blue">div</span> <span class="param">width</span>=<span class="param-val">120</span> <span class="param">height</span>=<span class="param-val">200</span><span class="gray">&gt;&lt;</span><span class="blue">/div</span><span class="gray">&gt;</span>
+</code></pre>
+
+	</div></section>
+	<section class="slide smaller"><div>
+		<h2>Declarative CSS</h2>
+		<pre><code><span class="blue">.block
+{</span>
+    width: <span class="param-val">120px</span>;
+    height: <span class="param-val">200px</span>;
+<span class="blue">}</span></code></pre>
+
+	</div></section>
+	<section class="slide smaller"><div>
+		<h2>Declarative CSS</h2>
+		<pre><code><span class="blue">.block
+{</span>
+    width: <span class="param-val">120px</span>;
+    <del>height: <span class="param-val">200px</span>;</del>
+<span class="blue">}</span>
+
+<span class="blue">.block
+{</span>
+    height: <span class="param-val">220px</span>;
+    background: <span class="param-val">red</span>;
+<span class="blue">}</span></code></pre>
+
+	</div></section>
+	<section class="slide"><div>
+		<h2>Old school</h2>
+		<pre><code><span class="gray">&lt;</span><span class="blue">div</span> <span class="param">class</span>="block" <span class="param">onclick</span>="<span class="param-val">doSomething()</span>"<span class="gray">&gt;&lt;</span><span class="blue">/div</span><span class="gray">&gt;</span></code></pre>
+
+	</div></section>
+	<section class="slide"><div>
+		<h2>Semi-declarative JS</h2>
+		<pre><code>$('<span class="blue">.block</span>').doSomething();</code></pre>
+
+	</div></section>
+	<section class="slide"><div>
+		<h2>Semi-declarative JS</h2>
+		<pre><code><span class="gray">&lt;</span><span class="blue">div</span> <span class="param">class</span>="<span class="param-val">block</span>"<span class="gray">&gt;&lt;</span><span class="blue">/div</span><span class="gray">&gt;</span>
+<span class="gray">&lt;</span><span class="blue">div</span> <span class="param">class</span>="<span class="param-val">another-block</span>"<span class="gray">&gt;&lt;</span><span class="blue">/div</span><span class="gray">&gt;</span>
+<br>
+$('<span class="blue">.block</span>').doSomething();
+<p class="next">$('<span class="blue">.another-block</span>').switchClass('<span class="blue">another-block</span>', '<span class="blue">block</span>');</p>
+</code></pre>
+
+	</div></section>
+	<!-- JS &amp; other techs  -->
+	<section class="slide small"><div>
+		<h2>Truly declarative JS made BEM way</h2>
+		<pre><code>BEM.decl(<span class="colored">'block'</span>, {
+	onSetMod: {
+	    modifier1</span>: {
+	        value1: function() {
+	            this.onM1V1();
+	        },
+	        '': function() {
+	            this.onRemoveM1();
+	        }
+	    }
+	}
+});</code></pre>
+
+	</div></section>
+
+	<section class="slide small"><div>
+		<h2>Truly declarative JS made BEM way</h2>
+		<pre><code>BEM.decl('block', {
+	onSetMod: {
+	    <span class="colored">modifier1</span>: {
+	        <span class="colored">value1</span>: function() {
+	            this.onM1V1();
+	        },
+	        <span class="colored">''</span>: function() {
+	            this.onRemoveM1();
+	        }
+	    }
+	}
+});</code></pre>
+
+	</div></section>
+
+	<section class="slide small"><div>
+		<h2>Truly declarative JS made BEM way</h2>
+		<pre><code>BEM.decl('block', {
+	onSetMod: {
+	    modifier1: {
+	        value1: function() {
+	            <span class="colored">this.onM1V1();</span>
+        ...
+});
+
+BEM.decl('block', {
+	onSetMod: {
+	    modifier1: {
+	        value1: function() {
+	            <span class="colored">this.doSomethingElse();</span>
+	    ...
+});</code></pre>
+
+	</div></section>
+
+	<section class="slide small"><div>
+		<h2>Templates</h2>
+		<pre><code>var <span class="blue">ctx</span> = { temperature: <span class="param-val">42</span> };<br>
+<div class="next">&lt;<span class="blue">div</span> <span class="param">class</span>="<span class="param-val">weather</span>"&gt;
+    &lt;<span class="blue">div</span> <span class="param">class</span>="<span class="param-val">weather__inner</span>"&gt;
+        {{temperature}}
+    &lt;<span class="blue">/div</span>&gt;
+&lt;<span class="blue">/div</span>&gt;</div><br>
+<div class="next">&lt;<span class="blue">div</span> <span class="param">class</span>="<span class="param-val">weather</span>"&gt;
+    &lt;<span class="blue">div</span> <span class="param">class</span>="<span class="param-val">weather__inner</span>"&gt;
+        42
+    &lt;<span class="blue">/div</span>&gt;
+&lt;<span class="blue">/div</span>&gt;</div></code></pre>
+
+	</div></section>
+	<section class="slide small"><div>
+		<h2>BEM templates</h2>
+		<pre><code>var <span class="blue">ctx</span> = { temperature: <span class="param-val">42</span> };
+<span class="next">var <span class="blue">view</span> = { block: '<span class="param-val">weather</span>' };</span><br><span class="next">
+block('weather')(
+    <span class="blue">tag()</span>('<span class="param-val">ul</span>'),
+    <span class="blue">content()</span>({
+        <span class="blue">elem</span>: '<span class="param-val">inner</span>',
+        <span class="blue">content</span>: ctx.temperature
+    }),
+    elem('inner')(
+        <span class="blue">tag()</span>('<span class="param-val">li</span>')
+    )
+);</span></code></pre>
+
+	</div></section>
+	<section class="slide small"><div>
+		<h2>BEM templates</h2>
+		<pre><code><div>&lt;<span class="blue">ul</span> <span class="param">class</span>="<span class="param-val">weather</span>"&gt;
+    &lt;<span class="blue">li</span> <span class="param">class</span>="<span class="param-val">weather__inner</span>"&gt;
+        42
+    &lt;<span class="blue">/li</span>&gt;
+&lt;<span class="blue">/ul</span>&gt;</div></code></pre>
+
+	</div></section>
+	<section class="slide cover w"><div>
+		<h2 style="margin: -80px 0 0 -90px">Web components</h2>
+		<img src="pictures/shadow-dom.jpg" alt="shadow-dom">
+
+	</div></section>
+	<section class="slide"><div>
+		<h2>Web components</h2>
+		<pre><code>&lt;<span class="blue">audio</span> controls src="<span class="param-val">campjs.mp3</span>"&gt;&lt;<span class="blue">/audio</span>&gt;</code></pre>
+		<img src="pictures/audio.png" alt="shadow-dom" style="width:60%; margin-top: -50px">
+		<ul>
+			<li>Semantic abstraction <span class="next red">messed with non-semantic tags</span></li>
+			<li class="next">All techs together</li>
+			<li class="next">Hidden inside with Shadow DOM <span class="next red">which lacks browser support</span></li>
+		</ul>
+
+	</div></section>
+	<section class="slide"><div>
+		<h2>BEM blocks</h2>
+		<pre><code>{ block: '<span class="param-val">audio</span>', hasControls: <span class="param-val">true</span>, src: '<span class="param-val">campjs.mp3</span>' }</code></pre>
+		<img src="pictures/audio.png" alt="shadow-dom" style="width:60%; margin-top: -50px">
+		<ul>
+			<li>Semantic abstraction <span class="green">with BEMTREE</span></li>
+			<li class="next">All techs together <span class="green">in same folder</span></li>
+			<li class="next">Hidden by convention <span class="green">which is supported in any browser</span></li>
+			<li class="next">Bundled inside one file <span class="green">for each tech to avoid extra requests</span></li>
+		</ul>
+	</div></section>
+
+	<section class="slide cover w black"><div>
+		<!-- <h2>One BEM to rule 'em all</h2> -->
+		<img src="pictures/frodo.jpg">
+	</div></section>
+
+	<section class="slide cover w black"><div>
+		<h2>One BEM to rule 'em all</h2>
+		<img src="pictures/frodo-bem.jpg">
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>How will your development process<br>look like?</h2>
+		<ul>
+			<li class="next">Abstraction on DOM — think in terms of blocks</li>
+			<li class="next">Blocks are also mapped on a file system</li>
+			<li class="next">Everything is declarative</li>
+			<li class="next">Libraries with ready-made blocks</li>
+		</ul>
+	</div></section>
+
+	<section class="slide section"><div>
+		<h2>From ancient times to the present day</h2>
+
+	</div></section>
+
+	<section class="slide"><div>
+	<h2>Old school</h2>
+	<p style="margin-top: -30px"><pre><code style="font-size: 18px; line-height: 1em">
+	<span style="font-weight: bold">#foot div div div</span>
+    {
+        background-position: 38%;
+        background-image: url(../i/foot-3.png);
+    }
+
+    <span style="font-weight: bold">#foot div div div div</span>
+    {
+        background-position: 54%;
+        background-image: url(../i/foot-4.png);
+    }
+
+    <span style="font-weight: bold">#foot div div div div div</span>
+    {
+        background-position: 71%;
+        background-image: url(../i/foot-5.png);
+    }
+
+    <span style="font-weight: bold">#foot div div div div div div</span>
+    {
+        background-position: 87%;
+        background-image: url(../i/foot-6.png);
+    }</code></pre></p>
+
+	</div></section>
+
+	<!-- <section class="slide cover w"><div>
+		Яндекс-иконки, появляющиеся от парочки к множеству.
+
+	</div></section> -->
+
+	<section class="slide"><div>
+		<h2>Problems we faced</h2>
+		<ul>
+			<li>Low speed of rendering</li>
+			<li class="next">Naming that does not help</li>
+			<li class="next">Any interaction with code might be dangerous</li>
+			<li class="next">Zero reuse</li>
+
+		</ul>
+	</div></section>
+
+	<section class="slide cover h black"><div>
+		<img src="pictures/fail.gif" alt="FAIL">
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Problems we faced</h2>
+		<ul>
+			<li>Low speed of rendering</li>
+			<li>Naming that does not help</li>
+			<li>Any interaction with code might be dangerous</li>
+			<li>Zero reuse</li>
+			<li>More and more technologies to support</li>
+			<li class="next">Facing the unknown</li>
+		</ul>
+	</div></section>
+
+
+	<section class="slide cover w"><div>
+		<img src="pictures/vitharNveged.png">
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>BEM helped in</h2>
+		<ul>
+			<li>getting rid of cascade & speed up the rendering </li>
+			<li class="next">getting a unified naming convention</li>
+			<li class="next">incapsulating code and..</li>
+			<li class="next">..later on reusing it</li>
+			<li class="next">separating and structuring technologies</li>
+		</ul>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>BEM grew into</h2>
+		<ul>
+			<li>popular, stable and tested on large-scale projects methodology for frontend development</li>
+			<li class="next">a meta-library inside Yandex</li>
+			<li class="next">an open source technology with a wider community</li>
+			<li class="next">a platform with methodology, tools and libraries included</li>
+			<li class="next">est. and hardworking since 2006</li>
+			<li class="next">a standard for frontender's CV in ex-USSR </li>
+		</ul>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Core team and the community</h2>
+		<ul>
+			<li>a development division at Yandex with 30+ frontenders</li>
+			<li class="next">400+ frontenders at Yandex.Services</li>
+			<li class="next">2500+ community developers</li>
+		</ul>
+
+	</div></section>
+
+	<section class="slide cover w"><div>
+		<img src="pictures/bem-ppl.png" alt="BEM people">
+
+	</div></section>
+
+	<section class="slide cover w"><div>
+		<img src="pictures/harry-bem.png" alt="BEM people">
+	</div></section>
+
+	<section class="slide cover w"><div>
+		<!-- <h2 style="background: rgba(255, 255, 30, 1); padding: 30px">css-tricks.com/bem-101/</h2> -->
+		<img src="pictures/chris-bem.png" alt="BEM people">
+
+	</div></section>
+
+	<section class="slide w"><div>
+		<img src="pictures/chris-bem-2.png" alt="BEM people" style="width: 100%">
+		"In the process, I discovered and adopted an interesting naming methodology called BEM (Block, Element, Modifier). It’s essentially a clever way of naming your CSS classes to make them more meaningful and simpler to understand" — Chris Coyier
+	</div></section>
+
+	<section class="slide cover w"><div>
+		<img src="pictures/google-bem.png" alt="BEM people">
+	</div></section>
+
+	<section class="slide cover h"><div>
+		<img src="pictures/bem-serp.png" alt="BEM people">
+	</div></section>
+
+	<section class="slide cover w"><div>
+		<img src="pictures/we.png" alt="BEM">
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Activities</h2>
+		<ul>
+			<li>Talks on conferencies</li>
+			<li class="next">BEMups</li>
+			<li class="next">Webinars</li>
+			<li class="next">Hackatons</li>
+			<li class="next">Consultations</li>
+		</ul>
+
+	</div></section>
+
+	<section class="slide cover w"><div>
+		<img src="pictures/avatars.png" alt="BEM">
+
+	</div></section>
+
+	<section class="slide cover w"><div>
+		<img src="pictures/logos.png" alt="BEM">
+
+	</div></section>
+
+	<section class="slide section"><div>
+		<h2>How to start?</h2>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>With methodology</h2>
+		<ul>
+			<li>Easy</li>
+			<li class="next">Long live architecture scaling</li>
+			<li class="next">Sense of how to refactor your CSS</li>
+			<li class="next">Read everything at <a href="https://bem.info/method/">bem.info/method</a></li>
+		</ul>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>With the platform</h2>
+		that has
+		<ul>
+			<li>JS framework</li>
+			<li class="next">Template engine</li>
+			<li class="next">Libraries</li>
+			<li class="next">Tools</li>
+			<li class="next">Taste via <a href="https://github.com/bem/project-stub">git clone https://github.com/bem/project-stub.git</a></li>
+		</ul>
+
+	</div></section>
+
+    <section class="slide cover w"><div>
+		<h2>With what you have</h2>
+		<img src="pictures/othertechs.png" alt="techs">
+		<!-- TODO: logos of techs only -->
+		<!-- <ul>
+			<li>any library or framework (Bootstrap, Angular, React, etc)</li>
+		</ul> -->
+
+	</div></section>
+
+	<section class="slide shout"><div>
+		<h2><a href="https://bem.info/">bem.info</a></h2>
+	</div></section>
+
+	<section class="slide shout"><div>
+		<h2><a href="https://bem.info/forum/">bem.info/forum</a></h2>
+	</div></section>
+
+	<section class="slide shout"><div>
+		<h2><a href="http://bit.ly/yougottalovebem">bit.ly/<br>yougottalovebem</a></h2>
+	</div></section>
+
+	<section class="slide cover w"><div>
+		<img src="pictures/wow.jpg" alt="WOW">
+	</div></section>
+
+	<section class="slide contacts"><div>
+		<h2>BEM</h2>
+		<h3>Block__Element_Modifier</h3>
+		<ul style="zoom: 150%">
+			<li class="social social_fb"><a href="https://en.bem.info/forum">bem.info/forum</a></li>
+			<li class="social social_tw"><a href="https://twitter.com/@bem_en">@bem_en</a> #b_</li>
+			<li class="social social_gh"><a href="https://github.com/bem">bem</a></li>
+		</ul>
+
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Links about BEM</h2>
+		<ul>
+			<li><a href="https://bem.info/">bem.info</a></li>
+			<li><a href="https://bem.info/method">bem.info/method</a></li>
+			<li><a href="https://bem.info/tutorials/project-stub/">project-stub</a></li>
+			<li><a href="https://bem.info/forum">bem.info/forum</a></li>
+		</ul>
+
+	</div></section>
+
+ 	<section class="slide"><div>
+		<h2>Links</h2>
+		<ul>
+			<li><a href="http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/">MindBEMding by Harry Roberts</a></li>
+			<li><a href="http://css-tricks.com/design-systems-building-future/">Design Systems: Building for the Future by Chris Coyier</a></li>
+			<li><a href="http://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations">Reduce the scope and complexity of style calculations by Paul Lewis</a></li>
+		</ul>
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Thanks to Varya Stepanova</h2>
+		<ul>
+			<li><a href="https://github.com/varya/component-development-css">component-development</a></li>
+		</ul>
+	</div></section>
+
+	<p class="badge"><a href="https://github.com/tadatuta">Fork me on Github</a></p>
+	<!--
+		To hide progress bar from entire presentation
+		just remove “progress” element.
+		-->
+	<div class="progress"><div></div></div>
+	<script src="shower-core/shower.min.js"></script>
+	<!-- Copyright © 2013 Yours Truly, Famous Inc. -->
+</body>
+</html>
